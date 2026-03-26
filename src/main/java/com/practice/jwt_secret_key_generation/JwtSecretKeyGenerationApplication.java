@@ -13,10 +13,8 @@ import io.jsonwebtoken.security.Keys;
 
 
 public class JwtSecretKeyGenerationApplication {
-	private final String SECRET_KEY="79LBhZS1YKW+HT8D9+c9lNhd+DqU0OJ9PxWlAa0BvLg=";
-    Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-	/*public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
 		keyGenerator.init(256);
 
@@ -28,28 +26,5 @@ public class JwtSecretKeyGenerationApplication {
 		System.out.println("===================================");
 		System.out.println(encodedKey);
 		System.out.println("===================================");
-	}*/
-
-	public static void main(String[] args) {
-
-        String UserName="Charan";
-        String finalToken= new JwtSecretKeyGenerationApplication().generatingTokenUsingSecretKey(UserName);
-        System.out.println("===================================");
-        System.out.println("Below is the Generated Token: ");
-        System.out.println(finalToken);
-        System.out.println("===================================");
-    }
-    public String generatingTokenUsingSecretKey(String UserName)
-    {
-        String GeneratedToken = Jwts.builder()
-                .subject(UserName)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 *10))
-                .signWith(key)
-                .compact();
-    
-        return GeneratedToken;
-    
-    }
-
+	}
 }
