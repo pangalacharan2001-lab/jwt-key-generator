@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -14,7 +15,7 @@ import io.jsonwebtoken.security.Keys;
 
 public class JwtSecretKeyGenerationApplication {
 	private final String SECRET_KEY="79LBhZS1YKW+HT8D9+c9lNhd+DqU0OJ9PxWlAa0BvLg=";
-    Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
 	/*public static void main(String[] args) throws Exception {
 		KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
@@ -38,6 +39,9 @@ public class JwtSecretKeyGenerationApplication {
         System.out.println("Below is the Generated Token: ");
         System.out.println(finalToken);
         System.out.println("===================================");
+
+        System.out.println("Parsing Claims Now: ");
+        new JwtSecretKeyGenerationApplication().extractingClaims(finalToken);
     }
     public String generatingTokenUsingSecretKey(String UserName)
     {
@@ -50,6 +54,21 @@ public class JwtSecretKeyGenerationApplication {
     
         return GeneratedToken;
     
+    }
+
+    public void extractingClaims(String token)
+    {
+        Claims claims = Jwts.parser()   
+                        .verifyWith(key)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload();
+        System.out.println("=======================================");
+        System.out.println("Subject: "+claims.getSubject());
+        System.out.println("IssuesAt: "+claims.getIssuedAt());
+        System.out.println("Expiration: "+claims.getExpiration());
+        System.out.println("Issuer : "+claims.getIssuer());
+        System.out.println("=======================================");
     }
 
 }
